@@ -56,10 +56,10 @@ function isWebGLAvailable(): boolean {
 function CanvasLoader() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 transition-opacity duration-300">
-      <div className="w-8 h-8 rounded-full border border-[#ccff00]/40 bg-[#ccff00]/10 flex items-center justify-center">
-        <div className="w-3.5 h-3.5 rounded-full bg-[#ccff00]/60 animate-pulse" />
+      <div className="w-8 h-8 rounded-full border border-[#8fad88]/40 bg-[#8fad88]/10 flex items-center justify-center">
+        <div className="w-3.5 h-3.5 rounded-full bg-[#8fad88]/70 animate-pulse" />
       </div>
-      <p className="mt-2.5 text-[9px] font-mono tracking-widest text-[#ccff00]/80 uppercase">
+      <p className="mt-2.5 text-[9px] font-mono tracking-widest text-[#62925b] uppercase font-bold">
         LOADING 3D ASSETS
       </p>
     </div>
@@ -69,10 +69,10 @@ function CanvasLoader() {
 export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
   modelPath = "/models/slipper-main.glb",
   fallbackImage = "/images/slipper-fallback.jpg",
-  productName = "AERIX Orbit Slide // 01",
+  productName = "FASON® Orbit Relief // 01",
   wireframe = false,
   colorwayHex,
-  accentColor = "#ccff00",
+  accentColor = "#8fad88",
   autoRotate = false,
   rotateSpeed = 0.8,
   enableControls = true,

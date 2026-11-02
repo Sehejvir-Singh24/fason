@@ -12,26 +12,26 @@ import dynamic from "next/dynamic";
 // This guarantees zero layout shift, zero scroll jumping, and zero vanishing text.
 function ScrollStorySkeleton() {
   return (
-    <div id="story" className="relative w-full bg-[#07090e]">
+    <div id="story" className="relative w-full bg-[#f8f7f4]">
       {/* Sticky Viewport Shell */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center z-0">
         <div
-          className="absolute inset-0 pointer-events-none opacity-20"
+          className="absolute inset-0 pointer-events-none opacity-25"
           style={{
-            background: "radial-gradient(circle at 60% 50%, #ccff00 0%, transparent 65%)",
+            background: "radial-gradient(circle at 60% 50%, #8fad88 0%, transparent 65%)",
           }}
         />
 
         {/* Top HUD Stage Tracker */}
         <div className="absolute top-20 sm:top-24 left-4 sm:left-12 z-20 pointer-events-none max-w-[85%]">
-          <div className="px-3 py-1.5 rounded-xl bg-[#07090e]/70 backdrop-blur-md border border-white/10 w-fit">
+          <div className="px-3 py-1.5 rounded-xl bg-white/85 backdrop-blur-md border border-black/8 w-fit shadow-sm">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#e52328] animate-pulse" />
-              <span className="font-mono text-[9px] sm:text-xs text-white tracking-widest uppercase">
+              <span className="font-mono text-[9px] sm:text-xs text-neutral-600 tracking-widest uppercase font-medium">
                 FASON® ORTHO-KINETIC // STORY
               </span>
             </div>
-            <div className="font-mono text-sm sm:text-xl font-black text-white mt-0.5 truncate">
+            <div className="font-mono text-sm sm:text-xl font-black text-[#14161a] mt-0.5 truncate">
               01 // ANATOMICAL SILHOUETTE
             </div>
           </div>
@@ -41,14 +41,14 @@ function ScrollStorySkeleton() {
       {/* 5 Trigger Sections matching exact 500svh height so scroll never shifts */}
       <div className="relative z-10">
         <section className="min-h-screen flex items-end sm:items-center px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
-          <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-white/10 pointer-events-auto mx-auto sm:mx-0">
-            <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#ccff00] uppercase mb-1.5">
+          <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-[#8fad88]/30 pointer-events-auto mx-auto sm:mx-0 shadow-sm">
+            <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#62925b] uppercase mb-1.5 font-bold">
               CHAPTER 01 // ORTHO-KINETIC FORM
             </div>
-            <h2 className="text-xl sm:text-3xl font-black text-white font-sans uppercase mb-2 sm:mb-3">
+            <h2 className="text-xl sm:text-3xl font-black text-[#14161a] font-sans uppercase mb-2 sm:mb-3">
               Anatomical Arch
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-sans">
               Sculpted to eliminate plantar pressure points. The continuous monocoque curve cradles the arch dynamically, giving tired feet instant soothing relief.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#07090e] text-white flex flex-col relative selection:bg-[#ccff00] selection:text-black">
+    <main className="min-h-screen bg-[#f8f7f4] text-[#14161a] flex flex-col relative selection:bg-[#8fad88] selection:text-white">
       {/* Global Navigation */}
       <Navbar />
 

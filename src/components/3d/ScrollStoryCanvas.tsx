@@ -13,7 +13,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// 5 Story Chapters Transform Targets
+// 5 Story Chapters Transform Targets with Soft Pastel Accents
 export const STORY_STAGES = [
   {
     id: "stage-silhouette",
@@ -25,7 +25,7 @@ export const STORY_STAGES = [
     modelRot: [0.25, -0.75, 0.12] as [number, number, number],
     camPos: [0, 0.4, 3.8] as [number, number, number],
     camPosMobile: [0, 0.4, 4.4] as [number, number, number],
-    accentColor: "#ccff00",
+    accentColor: "#8fad88", // Soft Pastel Sage
   },
   {
     id: "stage-upper",
@@ -37,7 +37,7 @@ export const STORY_STAGES = [
     modelRot: [-0.85, 0.35, -0.2] as [number, number, number],
     camPos: [0, 0.6, 3.2] as [number, number, number],
     camPosMobile: [0, 0.6, 3.8] as [number, number, number],
-    accentColor: "#00f3ff",
+    accentColor: "#82b2d8", // Soft Pastel Sky Blue
   },
   {
     id: "stage-sole",
@@ -49,7 +49,7 @@ export const STORY_STAGES = [
     modelRot: [1.75, 0.4, 0.85] as [number, number, number],
     camPos: [0, 0.2, 3.4] as [number, number, number],
     camPosMobile: [0, 0.3, 4.0] as [number, number, number],
-    accentColor: "#e52328",
+    accentColor: "#e58282", // Soft Pastel Rose / Terracotta
   },
   {
     id: "stage-materials",
@@ -61,7 +61,7 @@ export const STORY_STAGES = [
     modelRot: [0.35, 2.3, -0.15] as [number, number, number],
     camPos: [0, 0.3, 2.9] as [number, number, number],
     camPosMobile: [0, 0.4, 3.6] as [number, number, number],
-    accentColor: "#ccff00",
+    accentColor: "#a494d4", // Soft Pastel Lavender
   },
   {
     id: "stage-reveal",
@@ -73,7 +73,7 @@ export const STORY_STAGES = [
     modelRot: [0.2, 6.28, 0] as [number, number, number],
     camPos: [0, 0.4, 3.6] as [number, number, number],
     camPosMobile: [0, 0.4, 4.2] as [number, number, number],
-    accentColor: "#e52328",
+    accentColor: "#d4a373", // Soft Pastel Golden Sand
   },
 ];
 
@@ -359,23 +359,23 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
           }}
           className="w-full h-full"
         >
-          {/* Lighting — lighter on mobile */}
+          {/* Studio Lighting for light neutral theme */}
           {isMobile ? (
             <>
-              <ambientLight intensity={1.2} />
-              <directionalLight position={[4, 6, 4]} intensity={2.0} />
-              <pointLight position={[0, -2, -3]} intensity={1.5} color={accentColor} />
+              <ambientLight intensity={1.5} />
+              <directionalLight position={[4, 6, 4]} intensity={2.2} />
+              <pointLight position={[0, -2, -3]} intensity={1.0} color={accentColor} />
             </>
           ) : (
             <>
-              <ambientLight intensity={0.7} />
-              <directionalLight position={[6, 9, 6]} intensity={2.2} castShadow />
-              <directionalLight position={[-6, 4, -4]} intensity={0.9} color="#94a3b8" />
-              <pointLight position={[0, -2, -3]} intensity={2} color={accentColor} />
-              {/* Cheap fake shadow plane (desktop only) */}
+              <ambientLight intensity={1.2} />
+              <directionalLight position={[6, 9, 6]} intensity={2.4} castShadow />
+              <directionalLight position={[-6, 4, -4]} intensity={0.8} color="#f2f0eb" />
+              <pointLight position={[0, -2, -3]} intensity={1.2} color={accentColor} />
+              {/* Soft studio floor contact shadow */}
               <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.05, 0]} receiveShadow>
                 <planeGeometry args={[14, 14]} />
-                <shadowMaterial opacity={0.35} />
+                <shadowMaterial opacity={0.12} />
               </mesh>
             </>
           )}

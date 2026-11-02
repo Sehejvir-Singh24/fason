@@ -2,13 +2,19 @@
 
 @layer base {
   :root {
-    --bg-dark: #07090e;
-    --bg-card: #0d1118;
-    --accent-cyan: #00f3ff;
-    --accent-volt: #a6ff00;
-    --accent-silver: #e2e8f0;
-    --accent-crimson: #ff3366;
-    --border-glass: rgba(255, 255, 255, 0.08);
+    --bg-primary: #f8f7f4;
+    --bg-card: #ffffff;
+    --bg-secondary: #f2f0eb;
+    --text-primary: #14161a;
+    --text-secondary: #5a606d;
+    --text-muted: #8e95a2;
+    --pastel-sage: #8fad88;
+    --pastel-blue: #82b2d8;
+    --pastel-rose: #e58282;
+    --pastel-lavender: #a494d4;
+    --pastel-sand: #d4a373;
+    --brand-red: #e52328;
+    --border-glass: rgba(0, 0, 0, 0.08);
   }
 
   * {
@@ -16,47 +22,39 @@
   }
 
   body {
-    background-color: var(--bg-dark);
-    color: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     overflow-x: hidden;
     font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 }
 
-/* Custom Cyberpunk & Glassmorphism Utilities */
+/* Light Theme Contemporary Glassmorphism */
 .glass-panel {
-  background: rgba(13, 17, 24, 0.72);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .glass-panel-glow {
-  background: rgba(13, 17, 24, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 243, 255, 0.25);
-  box-shadow: 0 0 25px rgba(0, 243, 255, 0.12), inset 0 0 15px rgba(0, 243, 255, 0.05);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(143, 173, 136, 0.28);
+  box-shadow: 0 16px 40px -10px rgba(143, 173, 136, 0.16), 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .cyber-grid {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .radial-glow {
-  background: radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.12) 0%, rgba(7, 9, 14, 0) 70%);
-}
-
-.text-glow-cyan {
-  text-shadow: 0 0 12px rgba(0, 243, 255, 0.5);
-}
-
-.text-glow-volt {
-  text-shadow: 0 0 12px rgba(166, 255, 0, 0.5);
+  background: radial-gradient(circle at 50% 50%, rgba(143, 173, 136, 0.15) 0%, rgba(248, 247, 244, 0) 70%);
 }
 
 /* Custom Scrollbar */
@@ -66,25 +64,25 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090e;
+  background: #f8f7f4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f2937;
+  background: #d1cfc7;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f3ff;
+  background: #8fad88;
 }
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.5;
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.85;
     transform: scale(1.05);
   }
 }

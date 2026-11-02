@@ -30,40 +30,40 @@ export const PRODUCTS: Product[] = [
     ],
     colorways: [
       {
-        id: "stealth-onyx",
-        name: "Onyx Void / Crimson",
-        hex: "#11141a",
-        modelColor: "#1a1f29",
-        accentColor: "#e52328",
-        badge: "SIGNATURE EDITION",
+        id: "sage-mist",
+        name: "Pastel Sage / Alabaster",
+        hex: "#8fad88",
+        modelColor: "#c2d1be",
+        accentColor: "#62925b",
+        badge: "SIGNATURE RECOVERY",
         stock: 32
       },
       {
-        id: "cyber-volt",
-        name: "Volt Lime / Electric",
-        hex: "#a6ff00",
-        modelColor: "#2a3518",
-        accentColor: "#a6ff00",
-        badge: "LIMITED DROP",
+        id: "powder-cerulean",
+        name: "Powder Blue / Vapor",
+        hex: "#82b2d8",
+        modelColor: "#b8d2e5",
+        accentColor: "#528ebf",
+        badge: "SERENITY DROP",
+        stock: 18
+      },
+      {
+        id: "dusty-terracotta",
+        name: "Terracotta Rose / Clay",
+        hex: "#e58282",
+        modelColor: "#e5b3b3",
+        accentColor: "#c85d5d",
+        badge: "EARTHEN EDITION",
         stock: 14
       },
       {
-        id: "hyper-silver",
-        name: "Glacier Silver / Chrome",
-        hex: "#d1d5db",
-        modelColor: "#64748b",
-        accentColor: "#38bdf8",
-        badge: "LAB SPEC",
-        stock: 21
-      },
-      {
-        id: "solar-magma",
-        name: "FASON Crimson / Magma",
-        hex: "#e52328",
-        modelColor: "#3b1320",
-        accentColor: "#e52328",
-        badge: "BRAND PROTOTYPE",
-        stock: 8
+        id: "cashmere-sand",
+        name: "Cashmere Oat / Sand",
+        hex: "#d4a373",
+        modelColor: "#dfc7ad",
+        accentColor: "#a77341",
+        badge: "MINIMALIST LAB",
+        stock: 24
       }
     ],
     hotspots: [
@@ -124,21 +124,21 @@ export const PRODUCTS: Product[] = [
     ],
     colorways: [
       {
-        id: "stealth-onyx",
-        name: "Obsidian Core",
-        hex: "#090d14",
-        modelColor: "#0f172a",
-        accentColor: "#e52328",
-        badge: "CORE",
+        id: "chalk-alabaster",
+        name: "Chalk Alabaster",
+        hex: "#e8e6df",
+        modelColor: "#e0dcd3",
+        accentColor: "#8fad88",
+        badge: "CORE MONOLITH",
         stock: 19
       },
       {
-        id: "hyper-silver",
-        name: "Glacier White",
-        hex: "#e2e8f0",
-        modelColor: "#94a3b8",
-        accentColor: "#38bdf8",
-        badge: "ARCTIC",
+        id: "sage-lichen",
+        name: "Pastel Sage / Lichen",
+        hex: "#9bb595",
+        modelColor: "#c2d1be",
+        accentColor: "#62925b",
+        badge: "NORDIC LAB",
         stock: 11
       }
     ],
@@ -171,22 +171,22 @@ export const PRODUCTS: Product[] = [
     ],
     colorways: [
       {
-        id: "cyber-volt",
-        name: "Volt Energy",
-        hex: "#a6ff00",
-        modelColor: "#223311",
-        accentColor: "#a6ff00",
-        badge: "LIMITED",
+        id: "coastal-celeste",
+        name: "Celeste Sky / Breeze",
+        hex: "#90c5cf",
+        modelColor: "#bddfe6",
+        accentColor: "#4f98a5",
+        badge: "COASTAL RECOVERY",
         stock: 22
       },
       {
-        id: "solar-magma",
-        name: "FASON Crimson",
-        hex: "#e52328",
-        modelColor: "#441111",
-        accentColor: "#e52328",
-        badge: "CLASSIC",
-        stock: 9
+        id: "blush-peach",
+        name: "Pastel Peach / Coral",
+        hex: "#f0a89a",
+        modelColor: "#fad2cb",
+        accentColor: "#d67866",
+        badge: "SUMMER DROP",
+        stock: 16
       }
     ],
     hotspots: [],

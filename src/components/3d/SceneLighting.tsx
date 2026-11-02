@@ -9,7 +9,7 @@ interface SceneLightingProps {
 }
 
 export const SceneLighting: React.FC<SceneLightingProps> = ({
-  accentColor = "#00f3ff",
+  accentColor = "#8fad88",
   wireframe = false,
 }) => {
   return (
@@ -20,30 +20,30 @@ export const SceneLighting: React.FC<SceneLightingProps> = ({
       {/* Main Key Light */}
       <directionalLight
         position={[5, 8, 5]}
-        intensity={1.8}
+        intensity={2.2}
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0001}
       />
 
-      {/* Cool Fill Light */}
-      <directionalLight position={[-5, 4, -4]} intensity={0.9} color="#94a3b8" />
+      {/* Soft Studio Fill Light */}
+      <directionalLight position={[-5, 4, -4]} intensity={0.9} color="#f8f7f4" />
 
-      {/* Dynamic Cyber Rim Light corresponding to active colorway */}
-      <pointLight position={[0, -2, -3]} intensity={wireframe ? 3 : 1.5} color={accentColor} />
-      <pointLight position={[3, -1, 3]} intensity={0.8} color={accentColor} />
+      {/* Dynamic Pastel Rim Light corresponding to active colorway */}
+      <pointLight position={[0, -2, -3]} intensity={wireframe ? 2.5 : 1.2} color={accentColor} />
+      <pointLight position={[3, -1, 3]} intensity={0.7} color={accentColor} />
 
-      {/* Subtle Top Ambient */}
-      <ambientLight intensity={0.6} />
+      {/* Crisp Ambient Light */}
+      <ambientLight intensity={1.1} />
 
-      {/* Soft Ground Contact Shadow */}
+      {/* Soft Studio Ground Contact Shadow for Light Floor */}
       <ContactShadows
         position={[0, -1.05, 0]}
-        opacity={0.65}
+        opacity={0.22}
         scale={6}
         blur={2.4}
         far={3.5}
-        color="#000000"
+        color="#2c3038"
       />
     </>
   );
