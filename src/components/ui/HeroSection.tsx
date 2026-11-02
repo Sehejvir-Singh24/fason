@@ -1,0 +1,216 @@
+"use client";
+
+import React, { useRef, useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, Zap, Sparkles } from "lucide-react";
+import { ModelViewer3D } from "@/components/3d/ModelViewer3D";
+import gsap from "gsap";
+
+interface HeroSectionProps {
+  onExploreClick?: () => void;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const ctaGroupRef = useRef<HTMLDivElement>(null);
+  const metricsRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headlineRef.current, {
+        y: 35,
+        opacity: 0,
+        duration: 1.0,
+        ease: "power3.out",
+        delay: 0.15,
+      });
+
+      gsap.from(subtitleRef.current, {
+        y: 25,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        delay: 0.35,
+      });
+
+      gsap.from(ctaGroupRef.current, {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.5,
+      });
+
+      gsap.from(metricsRef.current, {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.65,
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      ref={containerRef}
+      className="relative w-full min-h-[100svh] flex flex-col justify-center bg-[#07090e] overflow-hidden pt-24 pb-14 sm:pt-28 sm:pb-20"
+    >
+      {/* Background Cyber Grid & Radiant Brand Glows */}
+      <div className="absolute inset-0 cyber-grid opacity-20 pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-80 sm:w-96 h-80 sm:h-96 bg-[#e52328]/15 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-80 sm:w-96 h-80 sm:h-96 bg-[#ccff00]/10 rounded-full blur-[130px] pointer-events-none" />
+
+      {/* Main Responsive Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 flex-grow">
+        {/* Left Column: FASON Campaign Headline & CTAs (Cols 1-7) */}
+        <div className="lg:col-span-7 flex flex-col justify-center order-1 lg:order-1 text-center lg:text-left">
+          {/* Brand Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 w-fit mx-auto lg:mx-0 mb-5 sm:mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#e52328] animate-ping" />
+            <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.2em] text-white uppercase font-bold">
+              FASON® <span className="text-[#e52328]">// FEEL THE RELIEF</span>
+            </span>
+          </div>
+
+          {/* Large Bold Headline */}
+          <h1
+            ref={headlineRef}
+            className="text-4xl sm:text-6xl xl:text-7xl font-black text-white tracking-tight uppercase leading-[0.96] mb-4 sm:mb-6 font-sans"
+          >
+            FEEL THE <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-100 to-[#ccff00]">
+              RELIEF.
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p
+            ref={subtitleRef}
+            className="text-xs sm:text-base text-neutral-300 font-sans max-w-xl mx-auto lg:mx-0 leading-relaxed mb-6 sm:mb-8"
+          >
+            Engineered by FASON® Biomechanical Labs. The Orbit Relief // 01 fuses continuous additive 3D void lattices with dual-density bio-foam to eliminate foot fatigue and restore zero-gravity stride comfort.
+          </p>
+
+          {/* CTA Buttons Group (Full-width on mobile, auto on desktop) */}
+          <div
+            ref={ctaGroupRef}
+            className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10"
+          >
+            <Link
+              href="/#collection"
+              className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-xl bg-[#ccff00] hover:bg-[#d8ff33] text-black font-mono font-black text-xs sm:text-sm tracking-wider transition-all shadow-[0_0_25px_rgba(204,255,0,0.35)] active:scale-95 min-h-[48px]"
+            >
+              <span>SHOP THE COLLECTION</span>
+              <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
+            </Link>
+
+            <button
+              onClick={() => {
+                if (onExploreClick) onExploreClick();
+                else {
+                  const el = document.getElementById("story");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-mono text-xs sm:text-sm tracking-wider transition-all active:scale-95 min-h-[48px]"
+            >
+              <span>DISCOVER 3D STORY</span>
+              <Zap className="w-4 h-4 text-[#ccff00]" />
+            </button>
+          </div>
+
+          {/* Telemetry Metrics Bar */}
+          <div
+            ref={metricsRef}
+            className="grid grid-cols-3 gap-2 sm:gap-4 pt-5 sm:pt-6 border-t border-white/10 max-w-lg mx-auto lg:mx-0"
+          >
+            <div className="p-2 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent">
+              <div className="font-mono text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-wider mb-0.5">
+                RELIEF INDEX
+              </div>
+              <div className="font-mono text-lg sm:text-2xl font-black text-[#e52328]">
+                98.4<span className="text-[10px] sm:text-xs text-white">%</span>
+              </div>
+            </div>
+            <div className="p-2 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent">
+              <div className="font-mono text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-wider mb-0.5">
+                KINETIC RETURN
+              </div>
+              <div className="font-mono text-lg sm:text-2xl font-black text-[#ccff00]">
+                +32.4<span className="text-[10px] sm:text-xs text-white">%</span>
+              </div>
+            </div>
+            <div className="p-2 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent">
+              <div className="font-mono text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-wider mb-0.5">
+                UNIT WEIGHT
+              </div>
+              <div className="font-mono text-lg sm:text-2xl font-black text-white">
+                148<span className="text-[10px] sm:text-xs text-neutral-400">g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: 3D Interactive Slipper Model (Cols 8-12) */}
+        <div className="lg:col-span-5 h-[340px] sm:h-[440px] lg:h-[600px] w-full relative flex items-center justify-center order-2 lg:order-2">
+          {/* Subtle Halo Spotlight behind model */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[260px] sm:w-[340px] h-[260px] sm:h-[340px] rounded-full bg-gradient-to-tr from-[#e52328]/15 via-[#ccff00]/10 to-transparent blur-3xl animate-pulse-glow" />
+          </div>
+
+          {/* Actual 3D Product Canvas */}
+          <div className="w-full h-full relative z-10">
+            <ModelViewer3D
+              modelPath="/models/slipper-main.glb"
+              fallbackImage="/images/slipper-fallback.jpg"
+              productName="FASON® Orbit Relief // 01"
+              autoRotate={true}
+              rotateSpeed={0.7}
+              enableFloat={true}
+              floatIntensity={0.5}
+              rotationIntensity={0.25}
+              enableMouseTilt={!isMobile}
+              enableControls={true}
+              cameraPosition={isMobile ? [0, 0.25, 4.2] : [1.1, 0.4, 3.8]}
+              modelScale={isMobile ? 0.95 : 1.05}
+              className="w-full h-full"
+            />
+          </div>
+
+          {/* Mobile Drag Instruction Badge */}
+          <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 z-20 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-black/70 backdrop-blur border border-white/10 font-mono text-[9px] sm:text-[10px] text-neutral-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ccff00]" />
+            <span>360° DRAG TO ROTATE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Small Scroll Indicator */}
+      <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-1.5 pointer-events-none">
+        <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-neutral-400">
+          SCROLL FOR 3D STORY
+        </span>
+        <div className="w-4 h-6 rounded-full border border-white/20 flex items-start justify-center p-1">
+          <div className="w-1 h-1.5 rounded-full bg-[#ccff00] animate-bounce" />
+        </div>
+      </div>
+    </section>
+  );
+};
