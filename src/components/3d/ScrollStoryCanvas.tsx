@@ -3,7 +3,7 @@
 import React, { useRef, useMemo, useEffect, useState, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Environment, ContactShadows, Float } from "@react-three/drei";
+import { useGLTF, Float } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { WebGLFallback } from "./WebGLFallback";
@@ -204,14 +204,19 @@ function StorySceneModel({
 
   return (
     <group ref={groupRef} scale={isMobile ? 0.88 : 1.0}>
-      <Float
-        speed={1.6}
-        rotationIntensity={isMobile ? 0.15 : 0.25}
-        floatIntensity={isMobile ? 0.35 : 0.5}
-        floatingRange={[-0.04, 0.04]}
-      >
+      {isMobile ? (
+        // On mobile skip Float to save GPU cycles
         <primitive object={clonedScene} />
-      </Float>
+      ) : (
+        <Float
+          speed={1.6}
+          rotationIntensity={0.25}
+          floatIntensity={0.5}
+          floatingRange={[-0.04, 0.04]}
+        >
+          <primitive object={clonedScene} />
+        </Float>
+      )}
     </group>
   );
 }
@@ -339,11 +344,11 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
     <div className="w-full h-full relative pointer-events-none">
       <Suspense fallback={null}>
         <Canvas
-          shadows
+          shadows={!isMobile}
           dpr={isMobile ? [1, 1.5] : [1, 2]}
           gl={{
-            antialias: true,
-            powerPreference: "high-performance",
+            antialias: !isMobile,
+            powerPreference: isMobile ? "default" : "high-performance",
             alpha: true,
           }}
           camera={{
@@ -354,20 +359,26 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
           }}
           className="w-full h-full"
         >
-          <Environment preset="city" />
-          <directionalLight position={[6, 9, 6]} intensity={2.2} castShadow />
-          <directionalLight position={[-6, 4, -4]} intensity={0.9} color="#94a3b8" />
-          <pointLight position={[0, -2, -3]} intensity={2} color={accentColor} />
-          <ambientLight intensity={0.7} />
-
-          <ContactShadows
-            position={[0, -1.05, 0]}
-            opacity={0.65}
-            scale={7}
-            blur={2.4}
-            far={3.5}
-            color="#000000"
-          />
+          {/* Lighting — lighter on mobile */}
+          {isMobile ? (
+            <>
+              <ambientLight intensity={1.2} />
+              <directionalLight position={[4, 6, 4]} intensity={2.0} />
+              <pointLight position={[0, -2, -3]} intensity={1.5} color={accentColor} />
+            </>
+          ) : (
+            <>
+              <ambientLight intensity={0.7} />
+              <directionalLight position={[6, 9, 6]} intensity={2.2} castShadow />
+              <directionalLight position={[-6, 4, -4]} intensity={0.9} color="#94a3b8" />
+              <pointLight position={[0, -2, -3]} intensity={2} color={accentColor} />
+              {/* Cheap fake shadow plane (desktop only) */}
+              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.05, 0]} receiveShadow>
+                <planeGeometry args={[14, 14]} />
+                <shadowMaterial opacity={0.35} />
+              </mesh>
+            </>
+          )}
 
           <StorySceneModel
             scrollState={scrollState}

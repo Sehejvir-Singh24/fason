@@ -152,5 +152,3 @@ export const SlipperModel: React.FC<SlipperModelProps> = ({
   );
 };
 
-// Preload the GLB model for instant rendering
-useGLTF.preload("/models/slipper-main.glb");

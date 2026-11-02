@@ -10,6 +10,12 @@ import { WebGLFallback } from "./WebGLFallback";
 import { HotspotPin } from "./HotspotPin";
 import { Hotspot } from "@/types/product";
 
+// Detect mobile so we can aggressively reduce rendering cost
+function getIsMobile() {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
+}
+
 interface ModelViewer3DProps {
   modelPath?: string;
   fallbackImage?: string;
@@ -87,11 +93,13 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
 }) => {
   const [hasWebGL, setHasWebGL] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const controlsRef = useRef<OrbitControlsImpl>(null);
 
   useEffect(() => {
     setMounted(true);
     setHasWebGL(isWebGLAvailable());
+    setIsMobile(getIsMobile());
   }, []);
 
   // WebGL Fallback if not available on user hardware
@@ -109,11 +117,11 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
     <div className={`relative ${className} select-none overflow-hidden`}>
       <Suspense fallback={<CanvasLoader />}>
         <Canvas
-          shadows
-          dpr={[1, 2]}
+          shadows={!isMobile}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
           gl={{
-            antialias: true,
-            powerPreference: "high-performance",
+            antialias: !isMobile,
+            powerPreference: isMobile ? "default" : "high-performance",
             alpha: true,
           }}
           camera={{
@@ -127,13 +135,13 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
           {/* Lighting Rig */}
           <SceneLighting accentColor={accentColor} wireframe={wireframe} />
 
-          {/* Model with optional floating levitation */}
+          {/* Model with optional floating levitation (reduced on mobile) */}
           {enableFloat ? (
             <Float
-              speed={2}
-              rotationIntensity={rotationIntensity}
-              floatIntensity={floatIntensity}
-              floatingRange={[-0.08, 0.08]}
+              speed={isMobile ? 1 : 2}
+              rotationIntensity={isMobile ? 0 : rotationIntensity}
+              floatIntensity={isMobile ? 0.2 : floatIntensity}
+              floatingRange={isMobile ? [-0.03, 0.03] : [-0.08, 0.08]}
             >
               <SlipperModel
                 modelPath={modelPath}

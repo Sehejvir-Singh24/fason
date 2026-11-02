@@ -2,9 +2,25 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Zap, Sparkles } from "lucide-react";
-import { ModelViewer3D } from "@/components/3d/ModelViewer3D";
+import { ArrowUpRight, Zap } from "lucide-react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
+
+// Dynamically import the heavy 3D viewer — excluded from initial JS bundle
+const ModelViewer3D = dynamic(
+  () => import("@/components/3d/ModelViewer3D").then((m) => ({ default: m.ModelViewer3D })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="relative w-14 h-14">
+          <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#ccff00] animate-spin" />
+          <div className="w-7 h-7 m-auto mt-3.5 rounded-full bg-[#ccff00]/20 animate-pulse" />
+        </div>
+      </div>
+    ),
+  }
+);
 
 interface HeroSectionProps {
   onExploreClick?: () => void;
