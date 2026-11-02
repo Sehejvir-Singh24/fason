@@ -13,7 +13,6 @@ import {
   Check,
   Maximize2,
   Minimize2,
-  RotateCw,
   ShieldCheck,
   Sparkles,
   Star,
@@ -31,7 +30,6 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({ produc
   const [selectedColorway, setSelectedColorway] = useState<Colorway>(product.colorways[0]);
   const [selectedSize, setSelectedSize] = useState<number>(product.sizes[2] || 9);
   const [wireframe, setWireframe] = useState<boolean>(false);
-  const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"specs" | "features" | "shipping">("specs");
   const [added, setAdded] = useState<boolean>(false);
@@ -106,19 +104,6 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({ produc
               {/* Action buttons */}
               <div className="flex items-center gap-2 pointer-events-auto">
                 <button
-                  onClick={() => setAutoRotate(!autoRotate)}
-                  title="Toggle Auto Spin"
-                  aria-label="Toggle Auto Spin"
-                  className={`p-2 rounded-xl border font-mono text-xs transition-colors shadow-sm ${
-                    autoRotate
-                      ? "bg-[#14161a] text-white border-[#14161a]"
-                      : "bg-white/90 text-neutral-800 border-black/10 hover:border-black/25"
-                  }`}
-                >
-                  <RotateCw className="w-3.5 h-3.5" />
-                </button>
-
-                <button
                   onClick={() => setWireframe(!wireframe)}
                   aria-label="Toggle Wireframe"
                   className={`px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border font-mono text-[10px] sm:text-xs transition-colors shadow-sm ${
@@ -140,7 +125,7 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({ produc
               </div>
             </div>
 
-            {/* The Actual 3D Model Viewer */}
+            {/* The Actual 3D Model Viewer (Stationary Calm Spec) */}
             <ModelViewer3D
               modelPath={product.modelPath}
               fallbackImage={product.fallbackImage}
@@ -148,10 +133,9 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({ produc
               wireframe={wireframe}
               colorwayHex={selectedColorway.modelColor}
               accentColor={selectedColorway.accentColor}
-              autoRotate={autoRotate}
-              enableFloat={true}
-              floatIntensity={0.5}
-              rotationIntensity={0.25}
+              autoRotate={false}
+              enableFloat={false}
+              enableMouseTilt={false}
               enableControls={true}
               cameraPosition={isMobile ? [0, 0.25, 4.2] : [0, 0.4, 3.6]}
               modelScale={isMobile ? 0.95 : 1.05}
@@ -161,7 +145,7 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({ produc
             {/* Bottom HUD Hint */}
             <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20 pointer-events-none flex items-center gap-2 text-[9px] sm:text-[10px] font-mono text-neutral-700 bg-white/85 backdrop-blur px-3 py-1.5 rounded-full border border-black/8 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-[#8fad88]" />
-              <span>360° INTERACTIVE // DRAG TO ROTATE // SCROLL TO ZOOM</span>
+              <span>3D STUDIO // DRAG TO INSPECT // PINCH OR SCROLL TO ZOOM</span>
             </div>
           </div>
 

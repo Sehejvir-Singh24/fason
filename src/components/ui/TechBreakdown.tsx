@@ -86,10 +86,8 @@ export const TechBreakdown: React.FC = () => {
               wireframe={wireframe}
               colorwayHex={selectedColorway.modelColor}
               accentColor={selectedColorway.accentColor}
-              autoRotate={autoRotate}
-              enableFloat={true}
-              floatIntensity={0.4}
-              rotationIntensity={0.2}
+              autoRotate={false}
+              enableFloat={false}
               enableControls={true}
               hotspots={FLAGSHIP_PRODUCT.hotspots}
               activeHotspotId={activeHotspot?.id}

@@ -183,29 +183,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
             <div className="w-[260px] sm:w-[340px] h-[260px] sm:h-[340px] rounded-full bg-gradient-to-tr from-[#e58282]/15 via-[#8fad88]/20 to-transparent blur-3xl animate-pulse-glow" />
           </div>
 
-          {/* Actual 3D Product Canvas */}
+          {/* Actual 3D Product Canvas (Calm, Stationary Architectural Spec) */}
           <div className="w-full h-full relative z-10">
             <ModelViewer3D
               modelPath="/models/slipper-main.glb"
               fallbackImage="/images/slipper-fallback.jpg"
               productName="FASON® Orbit Relief // 01"
-              autoRotate={true}
-              rotateSpeed={0.7}
-              enableFloat={true}
-              floatIntensity={0.5}
-              rotationIntensity={0.25}
-              enableMouseTilt={!isMobile}
+              autoRotate={false}
+              enableFloat={false}
+              enableMouseTilt={false}
               enableControls={true}
-              cameraPosition={isMobile ? [0, 0.25, 4.2] : [1.1, 0.4, 3.8]}
+              cameraPosition={isMobile ? [0, 0.25, 4.2] : [0, 0.3, 3.8]}
               modelScale={isMobile ? 0.95 : 1.05}
               className="w-full h-full"
             />
           </div>
 
-          {/* Mobile Drag Instruction Badge */}
+          {/* Product Spec Badge */}
           <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 z-20 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-white/85 backdrop-blur border border-black/8 shadow-sm font-mono text-[9px] sm:text-[10px] text-neutral-700">
             <span className="w-1.5 h-1.5 rounded-full bg-[#8fad88]" />
-            <span>360° DRAG TO ROTATE</span>
+            <span>FASON® KINETIC SPEC // 01</span>
           </div>
         </div>
       </div>
