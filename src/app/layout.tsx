@@ -53,16 +53,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <head>
-        {/* Preload the 3D model so it's in cache before the Canvas mounts */}
-        <link
-          rel="preload"
-          href="/models/slipper-main.glb"
-          as="fetch"
-          type="model/gltf-binary"
-          crossOrigin="anonymous"
-        />
-      </head>
+
       <body className="min-h-full flex flex-col bg-[#07090e] text-white">
         <CartProvider>{children}</CartProvider>
       </body>

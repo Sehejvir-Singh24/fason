@@ -32,15 +32,17 @@ export const ScrollStorySection: React.FC = () => {
         />
 
         {/* Top HUD Stage Tracker */}
-        <div className="absolute top-20 sm:top-24 left-4 sm:left-12 z-10 pointer-events-none max-w-[80%]">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#e52328] animate-pulse" />
-            <span className="font-mono text-[10px] sm:text-xs text-white tracking-widest uppercase">
-              FASON® ORTHO-KINETIC // STORY
-            </span>
-          </div>
-          <div className="font-mono text-base sm:text-2xl font-black text-white mt-0.5 truncate">
-            {stage.title}
+        <div className="absolute top-20 sm:top-24 left-4 sm:left-12 z-20 pointer-events-none max-w-[85%]">
+          <div className="px-3 py-1.5 rounded-xl bg-[#07090e]/70 backdrop-blur-md border border-white/10 w-fit">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#e52328] animate-pulse" />
+              <span className="font-mono text-[9px] sm:text-xs text-white tracking-widest uppercase">
+                FASON® ORTHO-KINETIC // STORY
+              </span>
+            </div>
+            <div className="font-mono text-sm sm:text-xl font-black text-white mt-0.5 truncate">
+              {stage.title}
+            </div>
           </div>
         </div>
 

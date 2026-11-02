@@ -52,20 +52,16 @@ function isWebGLAvailable(): boolean {
   }
 }
 
-// 3D Loading Fallback with animated telemetry
+// 3D Loading Fallback with subtle pulse
 function CanvasLoader() {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#07090e]/90 backdrop-blur-md z-20">
-      <div className="relative w-16 h-16 flex items-center justify-center">
-        <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#ccff00] animate-spin" />
-        <div className="w-8 h-8 rounded-full bg-[#ccff00]/20 animate-pulse" />
+    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 transition-opacity duration-300">
+      <div className="w-8 h-8 rounded-full border border-[#ccff00]/40 bg-[#ccff00]/10 flex items-center justify-center">
+        <div className="w-3.5 h-3.5 rounded-full bg-[#ccff00]/60 animate-pulse" />
       </div>
-      <p className="mt-4 text-xs font-mono tracking-widest text-[#ccff00] uppercase">
-        Compiling 3D Geometry...
+      <p className="mt-2.5 text-[9px] font-mono tracking-widest text-[#ccff00]/80 uppercase">
+        LOADING 3D ASSETS
       </p>
-      <div className="w-32 h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
-        <div className="h-full bg-[#ccff00] animate-[pulse_1.5s_ease-in-out_infinite]" />
-      </div>
     </div>
   );
 }

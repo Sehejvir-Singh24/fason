@@ -12,10 +12,9 @@ const ModelViewer3D = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="relative w-14 h-14">
-          <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#ccff00] animate-spin" />
-          <div className="w-7 h-7 m-auto mt-3.5 rounded-full bg-[#ccff00]/20 animate-pulse" />
+      <div className="w-full h-full flex flex-col items-center justify-center">
+        <div className="w-10 h-10 rounded-full border border-[#ccff00]/30 bg-[#ccff00]/5 flex items-center justify-center">
+          <div className="w-4 h-4 rounded-full bg-[#ccff00]/40 animate-pulse" />
         </div>
       </div>
     ),
@@ -45,38 +44,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
   }, []);
 
   useEffect(() => {
+    // Smooth entrance without vanishing text (immediateRender: false ensures SSR text stays visible)
     const ctx = gsap.context(() => {
-      gsap.from(headlineRef.current, {
-        y: 35,
-        opacity: 0,
-        duration: 1.0,
-        ease: "power3.out",
-        delay: 0.15,
-      });
+      gsap.fromTo(
+        headlineRef.current,
+        { y: 20 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", immediateRender: false }
+      );
 
-      gsap.from(subtitleRef.current, {
-        y: 25,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        delay: 0.35,
-      });
+      gsap.fromTo(
+        subtitleRef.current,
+        { y: 15 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", immediateRender: false }
+      );
 
-      gsap.from(ctaGroupRef.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.5,
-      });
+      gsap.fromTo(
+        ctaGroupRef.current,
+        { y: 10 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power2.out", immediateRender: false }
+      );
 
-      gsap.from(metricsRef.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.65,
-      });
+      gsap.fromTo(
+        metricsRef.current,
+        { y: 10 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power2.out", immediateRender: false }
+      );
     }, containerRef);
 
     return () => ctx.revert();
