@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState, Suspense } from "react";
+import React, { useRef, useMemo, useEffect, useState, useCallback, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Float } from "@react-three/drei";
@@ -93,6 +93,7 @@ interface StorySceneProps {
   colorwayHex?: string;
   accentColor: string;
   isMobile: boolean;
+  onReady?: () => void;
 }
 
 function StorySceneModel({
@@ -101,6 +102,7 @@ function StorySceneModel({
   colorwayHex,
   accentColor,
   isMobile,
+  onReady,
 }: StorySceneProps) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/models/slipper-main.glb");
@@ -141,6 +143,11 @@ function StorySceneModel({
       }
     });
   }, [clonedScene, wireframe, colorwayHex]);
+
+  // Signal that model geometry is ready
+  useEffect(() => {
+    if (onReady) onReady();
+  }, [onReady]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
@@ -238,6 +245,11 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
 }) => {
   const [hasWebGL, setHasWebGL] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [modelReady, setModelReady] = useState(false);
+
+  const handleModelReady = useCallback(() => {
+    setModelReady(true);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -342,6 +354,25 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
 
   return (
     <div className="w-full h-full relative pointer-events-none">
+      {/* Loading indicator — visible until model geometry is parsed and ready */}
+      <div
+        className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#f8f7f4] transition-opacity duration-700 ${
+          modelReady ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <div className="w-12 h-12 rounded-full border-2 border-[#8fad88]/30 bg-[#8fad88]/10 flex items-center justify-center mb-3">
+          <div className="w-5 h-5 rounded-full bg-[#8fad88]/60 animate-pulse" />
+        </div>
+        <p className="font-mono text-[10px] sm:text-xs tracking-[0.2em] text-neutral-500 uppercase">
+          LOADING 3D STORY
+        </p>
+        <div className="mt-3 w-32 h-1 rounded-full bg-black/5 overflow-hidden">
+          <div className="h-full w-full bg-[#8fad88]/50 rounded-full animate-[shimmer_1.5s_ease-in-out_infinite]"
+            style={{ animation: "shimmer 1.5s ease-in-out infinite", transformOrigin: "left" }}
+          />
+        </div>
+      </div>
+
       <Suspense fallback={null}>
         <Canvas
           shadows={!isMobile}
@@ -386,6 +417,7 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
             colorwayHex={colorwayHex}
             accentColor={accentColor}
             isMobile={isMobile}
+            onReady={handleModelReady}
           />
         </Canvas>
       </Suspense>

@@ -90,3 +90,15 @@
 .animate-pulse-glow {
   animation: pulseGlow 4s ease-in-out infinite;
 }
+
+@keyframes shimmer {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
