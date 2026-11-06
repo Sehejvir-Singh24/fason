@@ -1,25 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Zap } from "lucide-react";
-import dynamic from "next/dynamic";
 import gsap from "gsap";
-
-// Dynamically import the heavy 3D viewer — excluded from initial JS bundle
-const ModelViewer3D = dynamic(
-  () => import("@/components/3d/ModelViewer3D").then((m) => ({ default: m.ModelViewer3D })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-full border border-[#8fad88]/30 bg-[#8fad88]/10 flex items-center justify-center">
-          <div className="w-4 h-4 rounded-full bg-[#8fad88]/50 animate-pulse" />
-        </div>
-      </div>
-    ),
-  }
-);
 
 interface HeroSectionProps {
   onExploreClick?: () => void;
@@ -31,17 +16,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaGroupRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     // Smooth entrance without vanishing text (immediateRender: false ensures SSR text stays visible)
@@ -176,26 +150,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
           </div>
         </div>
 
-        {/* Right Column: 3D Interactive Slipper Model (Cols 8-12) */}
+        {/* Right Column: Product Image (Cols 8-12) */}
         <div className="lg:col-span-5 h-[340px] sm:h-[440px] lg:h-[600px] w-full relative flex items-center justify-center order-2 lg:order-2">
-          {/* Soft Pastel Halo Spotlight behind model */}
+          {/* Soft Pastel Halo Spotlight behind image */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-[260px] sm:w-[340px] h-[260px] sm:h-[340px] rounded-full bg-gradient-to-tr from-[#e58282]/15 via-[#8fad88]/20 to-transparent blur-3xl animate-pulse-glow" />
           </div>
 
-          {/* Actual 3D Product Canvas (Calm, Stationary Architectural Spec) */}
-          <div className="w-full h-full relative z-10">
-            <ModelViewer3D
-              modelPath="/models/slipper-main.glb"
-              fallbackImage="/images/slipper-fallback.jpg"
-              productName="FASON® Orbit Relief // 01"
-              autoRotate={false}
-              enableFloat={false}
-              enableMouseTilt={false}
-              enableControls={true}
-              cameraPosition={isMobile ? [0, 0.25, 4.2] : [0, 0.3, 3.8]}
-              modelScale={isMobile ? 0.95 : 1.05}
-              className="w-full h-full"
+          {/* Static Product Image — lightweight, instant load */}
+          <div className="w-full h-full relative z-10 flex items-center justify-center">
+            <Image
+              src="/images/slipper-fallback.jpg"
+              alt="FASON® Orbit Relief // 01"
+              width={600}
+              height={600}
+              priority
+              className="object-contain w-full h-full max-w-[500px] drop-shadow-2xl"
             />
           </div>
 

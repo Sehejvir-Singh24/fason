@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Navbar } from "@/components/ui/Navbar";
 import { HeroSection } from "@/components/ui/HeroSection";
 import { ProductGrid } from "@/components/ui/ProductGrid";
@@ -72,25 +72,6 @@ const ScrollStorySection = dynamic(
 );
 
 export default function HomePage() {
-  useEffect(() => {
-    // Immediately warm the 910 KB GLB in R3F cache on idle so it's ready on first scroll
-    if (typeof window !== "undefined") {
-      const warm = () => {
-        import("@react-three/drei")
-          .then(({ useGLTF }) => {
-            useGLTF.preload("/models/slipper-main.glb");
-          })
-          .catch(() => null);
-      };
-
-      if ("requestIdleCallback" in window) {
-        (window as Window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(warm);
-      } else {
-        setTimeout(warm, 100);
-      }
-    }
-  }, []);
-
   return (
     <main className="min-h-screen bg-[#f8f7f4] text-[#14161a] flex flex-col relative selection:bg-[#8fad88] selection:text-white">
       {/* Global Navigation */}
