@@ -102,3 +102,14 @@
     transform: scaleX(0);
   }
 }
+
+@keyframes heroEnter {
+  from { transform: translateY(16px); }
+  to { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter { animation: heroEnter 0.8s ease-out; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow { animation: none; }
+}

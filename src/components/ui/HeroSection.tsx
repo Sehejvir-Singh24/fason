@@ -1,57 +1,18 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Zap } from "lucide-react";
-import gsap from "gsap";
 
 interface HeroSectionProps {
   onExploreClick?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaGroupRef = useRef<HTMLDivElement>(null);
-  const metricsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Smooth entrance without vanishing text (immediateRender: false ensures SSR text stays visible)
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headlineRef.current,
-        { y: 20 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", immediateRender: false }
-      );
-
-      gsap.fromTo(
-        subtitleRef.current,
-        { y: 15 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", immediateRender: false }
-      );
-
-      gsap.fromTo(
-        ctaGroupRef.current,
-        { y: 10 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power2.out", immediateRender: false }
-      );
-
-      gsap.fromTo(
-        metricsRef.current,
-        { y: 10 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power2.out", immediateRender: false }
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
       id="hero"
-      ref={containerRef}
       className="relative w-full min-h-[100svh] flex flex-col justify-center bg-[#f8f7f4] overflow-hidden pt-24 pb-14 sm:pt-28 sm:pb-20"
     >
       {/* Background Cyber Grid & Soft Pastel Glows */}
@@ -67,14 +28,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 border border-black/8 w-fit mx-auto lg:mx-0 mb-5 sm:mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#e52328] animate-ping" />
             <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.2em] text-neutral-800 uppercase font-bold">
-              FASON® <span className="text-[#e52328]">// FEEL THE RELIEF</span>
+              FASON® <span className="text-[#e52328]">{"// FEEL THE RELIEF"}</span>
             </span>
           </div>
 
           {/* Large Bold Headline */}
           <h1
-            ref={headlineRef}
-            className="text-4xl sm:text-6xl xl:text-7xl font-black text-[#14161a] tracking-tight uppercase leading-[0.96] mb-4 sm:mb-6 font-sans"
+            className="hero-enter text-4xl sm:text-6xl xl:text-7xl font-black text-[#14161a] tracking-tight uppercase leading-[0.96] mb-4 sm:mb-6 font-sans"
           >
             FEEL THE <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#14161a] via-[#3a404d] to-[#8fad88]">
@@ -84,7 +44,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
 
           {/* Subtitle */}
           <p
-            ref={subtitleRef}
             className="text-xs sm:text-base text-neutral-600 font-sans max-w-xl mx-auto lg:mx-0 leading-relaxed mb-6 sm:mb-8 font-normal"
           >
             Engineered by FASON® Biomechanical Labs. The Orbit Relief // 01 fuses continuous additive 3D void lattices with dual-density bio-foam to eliminate foot fatigue and restore zero-gravity stride comfort.
@@ -92,7 +51,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
 
           {/* CTA Buttons Group (Full-width on mobile, auto on desktop) */}
           <div
-            ref={ctaGroupRef}
             className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10"
           >
             <Link
@@ -120,7 +78,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
 
           {/* Telemetry Metrics Bar */}
           <div
-            ref={metricsRef}
             className="grid grid-cols-3 gap-2 sm:gap-4 pt-5 sm:pt-6 border-t border-black/8 max-w-lg mx-auto lg:mx-0"
           >
             <div className="p-2 sm:p-0 rounded-xl bg-black/[0.02] sm:bg-transparent">
@@ -164,7 +121,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
               alt="FASON® Orbit Relief // 01"
               width={600}
               height={600}
-              priority
+              preload
+              sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 500px, 42vw"
               className="object-contain w-full h-full max-w-[500px] drop-shadow-2xl"
             />
           </div>

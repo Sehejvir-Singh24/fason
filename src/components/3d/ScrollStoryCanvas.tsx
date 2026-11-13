@@ -1,81 +1,18 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState, useCallback, Suspense } from "react";
+import React, { useRef, useMemo, useEffect, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Float } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { WebGLFallback } from "./WebGLFallback";
 
 // Register ScrollTrigger once on client
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// 5 Story Chapters Transform Targets with Soft Pastel Accents
-export const STORY_STAGES = [
-  {
-    id: "stage-silhouette",
-    title: "01 // ANATOMICAL SILHOUETTE",
-    subtitle: "ZERO-STRAIN CONTOUR",
-    description: "Sculpted to eliminate plantar pressure points and contour seamlessly to the natural human foot arch.",
-    modelPos: [1.0, -0.05, 0] as [number, number, number],
-    modelPosMobile: [0, 0.45, 0] as [number, number, number],
-    modelRot: [0.25, -0.75, 0.12] as [number, number, number],
-    camPos: [0, 0.4, 3.8] as [number, number, number],
-    camPosMobile: [0, 0.4, 4.4] as [number, number, number],
-    accentColor: "#8fad88", // Soft Pastel Sage
-  },
-  {
-    id: "stage-upper",
-    title: "02 // CRYO-WEAVE SHROUD",
-    subtitle: "THERMAL RELIEF",
-    description: "Laser-engineered micro-apertures dissipate foot heat and moisture, while dynamic ribs conform gently to dorsal tendons.",
-    modelPos: [-0.85, -0.2, 0.4] as [number, number, number],
-    modelPosMobile: [0, 0.4, 0.2] as [number, number, number],
-    modelRot: [-0.85, 0.35, -0.2] as [number, number, number],
-    camPos: [0, 0.6, 3.2] as [number, number, number],
-    camPosMobile: [0, 0.6, 3.8] as [number, number, number],
-    accentColor: "#82b2d8", // Soft Pastel Sky Blue
-  },
-  {
-    id: "stage-sole",
-    title: "03 // DUAL-LATTICE RELIEF SOLE",
-    subtitle: "PLANTAR DECOMPRESSION",
-    description: "3D printed hexagonal cells compress under heel strike to eliminate shock, redirecting energy into spring-loaded propulsion.",
-    modelPos: [0.85, 0.1, 0.2] as [number, number, number],
-    modelPosMobile: [0, 0.45, 0.1] as [number, number, number],
-    modelRot: [1.75, 0.4, 0.85] as [number, number, number],
-    camPos: [0, 0.2, 3.4] as [number, number, number],
-    camPosMobile: [0, 0.3, 4.0] as [number, number, number],
-    accentColor: "#e58282", // Soft Pastel Rose / Terracotta
-  },
-  {
-    id: "stage-materials",
-    title: "04 // BIO-POLYMER MATRIX",
-    subtitle: "CIRCULAR HEALTH & COMFORT",
-    description: "100% bio-circular polyether elastomer. Skin-friendly, hypoallergenic, and ultra-durable with a 148g featherweight footprint.",
-    modelPos: [-0.8, -0.1, 0.7] as [number, number, number],
-    modelPosMobile: [0, 0.4, 0.3] as [number, number, number],
-    modelRot: [0.35, 2.3, -0.15] as [number, number, number],
-    camPos: [0, 0.3, 2.9] as [number, number, number],
-    camPosMobile: [0, 0.4, 3.6] as [number, number, number],
-    accentColor: "#a494d4", // Soft Pastel Lavender
-  },
-  {
-    id: "stage-reveal",
-    title: "05 // FEEL THE RELIEF®",
-    subtitle: "POST-EXERTION MASTERCLASS",
-    description: "Slip in and experience the ultimate biomechanical relief. Step into zero gravity after every workout and long day.",
-    modelPos: [0, -0.1, 0] as [number, number, number],
-    modelPosMobile: [0, 0.3, 0] as [number, number, number],
-    modelRot: [0.2, 6.28, 0] as [number, number, number],
-    camPos: [0, 0.4, 3.6] as [number, number, number],
-    camPosMobile: [0, 0.4, 4.2] as [number, number, number],
-    accentColor: "#d4a373", // Soft Pastel Golden Sand
-  },
-];
+import { STORY_STAGES } from "@/data/story";
 
 interface StorySceneProps {
   scrollState: React.MutableRefObject<{
@@ -91,7 +28,6 @@ interface StorySceneProps {
   }>;
   wireframe: boolean;
   colorwayHex?: string;
-  accentColor: string;
   isMobile: boolean;
   onReady?: () => void;
 }
@@ -100,7 +36,6 @@ function StorySceneModel({
   scrollState,
   wireframe,
   colorwayHex,
-  accentColor,
   isMobile,
   onReady,
 }: StorySceneProps) {
@@ -144,13 +79,12 @@ function StorySceneModel({
     });
   }, [clonedScene, wireframe, colorwayHex]);
 
-  // Signal that model geometry is ready
-  useEffect(() => {
-    if (onReady) onReady();
-  }, [onReady]);
-
+  const rendered = useRef(false);
   useFrame((state, delta) => {
     if (!groupRef.current) return;
+    if (rendered.current) onReady?.();
+    rendered.current = true;
+    delta = Math.min(delta, 0.1);
     const s = scrollState.current;
 
     // Smooth position interpolation
@@ -234,6 +168,10 @@ interface ScrollStoryCanvasProps {
   colorwayHex?: string;
   accentColor?: string;
   onStageChange?: (stageIndex: number) => void;
+  isMobile: boolean;
+  active: boolean;
+  onReady: () => void;
+  onFailure: () => void;
 }
 
 export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
@@ -242,24 +180,11 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
   colorwayHex,
   accentColor = "#ccff00",
   onStageChange,
+  isMobile,
+  active,
+  onReady,
+  onFailure,
 }) => {
-  const [hasWebGL, setHasWebGL] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [modelReady, setModelReady] = useState(false);
-
-  const handleModelReady = useCallback(() => {
-    setModelReady(true);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const firstStage = STORY_STAGES[0];
   const initialPos = isMobile ? firstStage.modelPosMobile : firstStage.modelPos;
   const initialCam = isMobile ? firstStage.camPosMobile : firstStage.camPos;
@@ -276,19 +201,6 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
     camZ: initialCam[2],
   });
 
-  useEffect(() => {
-    try {
-      const canvas = document.createElement("canvas");
-      const ok = Boolean(
-        window.WebGLRenderingContext &&
-          (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-      );
-      setHasWebGL(ok);
-    } catch {
-      setHasWebGL(false);
-    }
-  }, []);
-
   // Hook up GSAP ScrollTrigger
   useEffect(() => {
     if (!containerRef.current) return;
@@ -296,6 +208,11 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
     const sections = containerRef.current.querySelectorAll<HTMLElement>(".story-trigger-section");
     if (!sections.length) return;
 
+    Object.assign(scrollState.current, {
+      posX: initialPos[0], posY: initialPos[1], posZ: initialPos[2],
+      rotX: firstStage.modelRot[0], rotY: firstStage.modelRot[1], rotZ: firstStage.modelRot[2],
+      camX: initialCam[0], camY: initialCam[1], camZ: initialCam[2],
+    });
     const ctx = gsap.context(() => {
       const masterTl = gsap.timeline({
         scrollTrigger: {
@@ -339,44 +256,23 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
           i
         );
       }
+      masterTl.scrollTrigger?.refresh();
+      masterTl.progress(masterTl.scrollTrigger?.progress ?? 0);
     }, containerRef);
 
     return () => ctx.revert();
-  }, [containerRef, onStageChange, isMobile]);
-
-  if (!hasWebGL) {
-    return (
-      <div className="w-full h-full flex items-center justify-center p-6">
-        <WebGLFallback />
-      </div>
-    );
-  }
+  }, [containerRef, onStageChange, isMobile, firstStage, initialPos, initialCam]);
 
   return (
     <div className="w-full h-full relative pointer-events-none">
-      {/* Loading indicator — visible until model geometry is parsed and ready */}
-      <div
-        className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#f8f7f4] transition-opacity duration-700 ${
-          modelReady ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <div className="w-12 h-12 rounded-full border-2 border-[#8fad88]/30 bg-[#8fad88]/10 flex items-center justify-center mb-3">
-          <div className="w-5 h-5 rounded-full bg-[#8fad88]/60 animate-pulse" />
-        </div>
-        <p className="font-mono text-[10px] sm:text-xs tracking-[0.2em] text-neutral-500 uppercase">
-          LOADING 3D STORY
-        </p>
-        <div className="mt-3 w-32 h-1 rounded-full bg-black/5 overflow-hidden">
-          <div className="h-full w-full bg-[#8fad88]/50 rounded-full animate-[shimmer_1.5s_ease-in-out_infinite]"
-            style={{ animation: "shimmer 1.5s ease-in-out infinite", transformOrigin: "left" }}
-          />
-        </div>
-      </div>
-
       <Suspense fallback={null}>
         <Canvas
+          frameloop={active ? "always" : "never"}
+          onCreated={({ gl }) => {
+            gl.domElement.addEventListener("webglcontextlost", onFailure, { once: true });
+          }}
           shadows={!isMobile}
-          dpr={isMobile ? [1, 1.5] : [1, 2]}
+          dpr={isMobile ? [1, 1.25] : [1, 2]}
           gl={{
             antialias: !isMobile,
             powerPreference: isMobile ? "default" : "high-performance",
@@ -415,12 +311,15 @@ export const ScrollStoryCanvas: React.FC<ScrollStoryCanvasProps> = ({
             scrollState={scrollState}
             wireframe={wireframe}
             colorwayHex={colorwayHex}
-            accentColor={accentColor}
             isMobile={isMobile}
-            onReady={handleModelReady}
+            onReady={onReady}
           />
         </Canvas>
       </Suspense>
     </div>
   );
 };
+
+export function clearStoryModelCache() {
+  useGLTF.clear("/models/slipper-main.glb");
+}

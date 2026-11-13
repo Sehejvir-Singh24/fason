@@ -2,7 +2,8 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { ScrollStoryCanvas, STORY_STAGES } from "@/components/3d/ScrollStoryCanvas";
+import { STORY_STAGES } from "@/data/story";
+import { StoryViewport } from "./StoryViewport";
 import { ArrowRight, CheckCircle2, Cpu, Layers, Sparkles } from "lucide-react";
 
 export const ScrollStorySection: React.FC = () => {
@@ -16,11 +17,11 @@ export const ScrollStorySection: React.FC = () => {
     <div id="story" ref={containerRef} className="relative w-full bg-[#f8f7f4]">
       {/* Sticky 3D Canvas Viewport Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center z-0">
-        <ScrollStoryCanvas
+        <StoryViewport
           containerRef={containerRef}
           wireframe={wireframe}
           accentColor={stage.accentColor}
-          onStageChange={(idx) => setActiveStage(idx)}
+          onStageChange={setActiveStage}
         />
 
         {/* Ambient Stage Glow (Pastel wash) */}
