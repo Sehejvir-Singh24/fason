@@ -16,7 +16,7 @@ export const ScrollStorySection: React.FC = () => {
   return (
     <div id="story" ref={containerRef} className="relative w-full bg-[#f8f7f4]">
       {/* Sticky 3D Canvas Viewport Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center z-0">
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden flex items-center justify-center z-0">
         <StoryViewport
           containerRef={containerRef}
           wireframe={wireframe}
@@ -78,9 +78,9 @@ export const ScrollStorySection: React.FC = () => {
       </div>
 
       {/* 5 Scroll Story Chapters (Trigger Sections) */}
-      <div className="relative z-10">
+      <div className="relative z-10 -mt-[100svh] pointer-events-none">
         {/* Stage 1: Overall Silhouette */}
-        <section className="story-trigger-section min-h-screen flex items-end sm:items-center px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
+        <section className="story-trigger-section min-h-[100svh] flex items-end sm:items-center px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
           <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-[#8fad88]/30 pointer-events-auto mx-auto sm:mx-0 shadow-sm">
             <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#62925b] uppercase mb-1.5 font-bold">
               CHAPTER 01 // ORTHO-KINETIC FORM
@@ -105,7 +105,7 @@ export const ScrollStorySection: React.FC = () => {
         </section>
 
         {/* Stage 2: Upper Strap Construction */}
-        <section className="story-trigger-section min-h-screen flex items-end sm:items-center justify-end px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
+        <section className="story-trigger-section min-h-[100svh] flex items-end sm:items-center justify-end px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
           <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-[#82b2d8]/35 pointer-events-auto mx-auto sm:mr-0 sm:ml-auto shadow-sm">
             <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#4d86b1] uppercase mb-1.5 font-bold">
               CHAPTER 02 // THERMAL RELIEF
@@ -124,7 +124,7 @@ export const ScrollStorySection: React.FC = () => {
         </section>
 
         {/* Stage 3: Sole Design & Dual-Lattice */}
-        <section className="story-trigger-section min-h-screen flex items-end sm:items-center px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
+        <section className="story-trigger-section min-h-[100svh] flex items-end sm:items-center px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
           <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-[#e58282]/35 pointer-events-auto mx-auto sm:mx-0 shadow-sm">
             <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#d15353] uppercase mb-1.5 font-bold">
               CHAPTER 03 // PLANTAR DECOMPRESSION
@@ -149,7 +149,7 @@ export const ScrollStorySection: React.FC = () => {
         </section>
 
         {/* Stage 4: Material Details */}
-        <section className="story-trigger-section min-h-screen flex items-end sm:items-center justify-end px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
+        <section className="story-trigger-section min-h-[100svh] flex items-end sm:items-center justify-end px-4 sm:px-12 pb-24 sm:pb-0 pointer-events-none">
           <div className="w-full max-w-sm sm:max-w-md p-5 sm:p-8 rounded-2xl glass-panel-glow border-[#a494d4]/35 pointer-events-auto mx-auto sm:mr-0 sm:ml-auto shadow-sm">
             <div className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[#7d6bb8] uppercase mb-1.5 font-bold">
               CHAPTER 04 // CLEAN BIO-MATERIALS
@@ -174,7 +174,7 @@ export const ScrollStorySection: React.FC = () => {
         </section>
 
         {/* Stage 5: Complete Product Reveal */}
-        <section className="story-trigger-section min-h-screen flex items-end sm:items-center justify-center px-4 sm:px-6 pb-20 sm:pb-0 pointer-events-none">
+        <section className="story-trigger-section min-h-[100svh] flex items-end sm:items-center justify-center px-4 sm:px-6 pb-20 sm:pb-0 pointer-events-none">
           <div className="w-full max-w-lg p-6 sm:p-10 rounded-3xl glass-panel-glow border-[#d4a373]/40 text-center pointer-events-auto mx-auto shadow-md">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e52328]/10 border border-[#e52328]/25 font-mono text-[10px] text-neutral-800 uppercase mb-3">
               <Sparkles className="w-3.5 h-3.5 text-[#e52328]" />

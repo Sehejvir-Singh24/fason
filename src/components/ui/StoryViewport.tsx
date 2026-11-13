@@ -8,6 +8,9 @@ import { STORY_STAGES } from "@/data/story";
 type CanvasComponent = typeof ScrollStoryCanvas;
 type Props = Pick<React.ComponentProps<CanvasComponent>, "containerRef" | "wireframe" | "accentColor" | "onStageChange">;
 
+// A tiny preview of the actual product, included in the initial HTML.
+const previewPlaceholder = "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABQBwCdASowADAAPu1wsVOppiSkI4oBMB2JaQAD52y1KIcDKKCnTXNIwNh3fOhTRSZTFagz1WTiLu/3pHuW9vIYIuYAAMpx/m5cLuWv3QxctMRmAsWDXtJPs8bJ2/Wa3U5NP0CbFTspjEm/tThhANCImTifHoQkTQ4GYECbv3ifgqRguW4PDMfVohoNJwxqEwEtbKkAcn2Qh3DvUyPntawPdlmvBnSYrwiTTs1C2POWSPQ/HwfIp+ZdzqgQaSHBC1W7A1Nkb4GwZPTT3nhpCjdfEQJ8Oei/c2pJiePj8Igl7nZojK4AAA==";
+
 class StoryBoundary extends Component<{ children: React.ReactNode; onFailure: () => void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -68,6 +71,9 @@ export function StoryViewport(props: Props) {
     let near = false;
     let visible = false;
     let loading = false;
+    // Proximity alone starts 3D immediately on many phones. Require scrolling
+    // or a direct story link; scroll restoration also works before hydration.
+    let approaching = window.scrollY > 0 || window.location.hash === "#story";
     const update = () => {
       setMobile(size.matches);
       setReduced(motion.matches);
@@ -76,7 +82,7 @@ export function StoryViewport(props: Props) {
         setReady(false);
       }
       setActive(visible && !document.hidden && !motion.matches);
-      if (!near || motion.matches || document.hidden || loading) return;
+      if (!approaching || !near || motion.matches || document.hidden || loading) return;
       loading = true;
       try {
         const canvas = document.createElement("canvas");
@@ -93,6 +99,18 @@ export function StoryViewport(props: Props) {
         setCanvasScene(() => module.ScrollStoryCanvas);
       }).catch(() => { if (!cancelled) handleFailure(); });
     };
+    const onScroll = () => {
+      if (!approaching && window.scrollY > 0) {
+        approaching = true;
+        update();
+      }
+    };
+    const onHashChange = () => {
+      if (window.location.hash === "#story") {
+        approaching = true;
+        update();
+      }
+    };
     const preloadObserver = new IntersectionObserver(([entry]) => {
       near = entry.isIntersecting;
       update();
@@ -106,6 +124,8 @@ export function StoryViewport(props: Props) {
     motion.addEventListener("change", update);
     size.addEventListener("change", update);
     document.addEventListener("visibilitychange", update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("hashchange", onHashChange);
     return () => {
       cancelled = true;
       preloadObserver.disconnect();
@@ -113,14 +133,18 @@ export function StoryViewport(props: Props) {
       motion.removeEventListener("change", update);
       size.removeEventListener("change", update);
       document.removeEventListener("visibilitychange", update);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("hashchange", onHashChange);
     };
   }, [containerRef, attempt, handleFailure]);
 
   return (
     <div className="relative w-full h-full">
       <div className={`absolute inset-0 transition-opacity duration-300 ${ready && !failed && !reduced ? "opacity-0" : "opacity-100"}`}>
+        <div aria-hidden="true" className="absolute inset-8 bg-contain bg-center bg-no-repeat"
+          style={{ backgroundImage: `url("${previewPlaceholder}")` }} />
         <Image src="/images/slipper-fallback.jpg" alt="FASON Orbit Relief product preview" fill
-          sizes="(max-width: 768px) 100vw, 60vw" className="object-contain p-8" />
+          loading="eager" sizes="(max-width: 768px) 100vw, 60vw" className="object-contain p-8" />
       </div>
       {CanvasScene && !failed && !reduced && (
         <div className={`absolute inset-0 ${ready ? "opacity-100" : "opacity-0"}`}>
